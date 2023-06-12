@@ -1,117 +1,148 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
-  View,
+  StyleSheet,
+  Pressable,
+  Modal,
+  FlatList,
+  Alert,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Form} from './src/components/Form';
+import {Patient} from './src/components/Patient';
+import {PatientDetails} from './src/components/PatientDetails';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const App = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [patients, setPatients] = useState([]);
+  const [patient, setPatient] = useState({});
+  const [modalPatientDetails, setModalPatientDetails] = useState(false);
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
+  const newAppointmentHandler = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const editPatient = id => {
+    const selectedPatient = patients?.filter(patient => patient.id === id);
+
+    setPatient(selectedPatient[0]);
+  };
+
+  const removePatient = id => {
+    Alert.alert(
+      'Do you want to remove this patient?',
+      "This action can't be undone",
+      [
+        {text: 'Cancel'},
+        {
+          text: 'Remove',
+          onPress: () => {
+            const updatedUsers = patients.filter(patient => patient.id !== id);
+            setPatients(updatedUsers);
           },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+        },
+      ],
+    );
+    console.log(id);
+  };
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const closeModal = () => {
+    setIsModalVisible(!isModalVisible);
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>
+        Appointments <Text style={styles.titleBold}>Vet</Text>
+      </Text>
+      <Pressable
+        onPressOut={newAppointmentHandler}
+        style={styles.btnNewAppointment}>
+        <Text style={styles.btnTextNewAppoinment}>New appoinment</Text>
+      </Pressable>
+
+      {patients.length === 0 ? (
+        <Text style={styles.noPatients}>No patients available.</Text>
+      ) : (
+        <FlatList
+          style={styles.listView}
+          data={patients}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return (
+              <Patient
+                item={item}
+                setIsModalVisible={setIsModalVisible}
+                editPatient={editPatient}
+                removePatient={removePatient}
+                setModalPatientDetails={setModalPatientDetails}
+                setPatient={setPatient}
+              />
+            );
+          }}
+        />
+      )}
+
+      {isModalVisible && (
+        <Form
+          isModalVisible={isModalVisible}
+          closeModal={closeModal}
+          setPatients={setPatients}
+          patients={patients}
+          setPatient={setPatient}
+          patient={patient}
+        />
+      )}
+
+      <Modal visible={modalPatientDetails} animationType="fade">
+        <PatientDetails
+          patient={patient}
+          setModalPatientDetails={setModalPatientDetails}
+          setPatient={setPatient}
+        />
+      </Modal>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    backgroundColor: '#F3F6F6',
+    flex: 1,
   },
-  sectionTitle: {
+  title: {
+    textAlign: 'center',
+    fontSize: 30,
+    color: '#000000',
+    fontWeight: '600',
+  },
+  titleBold: {
+    fontWeight: '900',
+    color: '#6D28D9',
+  },
+  btnNewAppointment: {
+    backgroundColor: '#6D28D9',
+    padding: 15,
+    marginTop: 30,
+    marginHorizontal: 20,
+    borderRadius: 10,
+  },
+  btnTextNewAppoinment: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  noPatients: {
+    marginTop: 40,
+    textAlign: 'center',
     fontSize: 24,
     fontWeight: '600',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  listView: {
+    marginTop: 50,
   },
 });
 

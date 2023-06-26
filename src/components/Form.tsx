@@ -13,6 +13,17 @@ import {
 
 import DatePicker from 'react-native-date-picker';
 
+import {PatientType, PatientsType} from '../types';
+
+type FormPros = {
+  isModalVisible: boolean;
+  closeModal: () => void;
+  setPatients: React.Dispatch<React.SetStateAction<PatientsType>>;
+  patients: PatientsType;
+  patient: PatientType | undefined;
+  setPatient: React.Dispatch<React.SetStateAction<PatientType | undefined>>;
+};
+
 export const Form = ({
   isModalVisible,
   closeModal,
@@ -20,9 +31,9 @@ export const Form = ({
   patients,
   patient,
   setPatient,
-}) => {
+}: FormPros) => {
   const [patientName, setPatientName] = useState('');
-  const [patientId, setPatientId] = useState();
+  const [patientId, setPatientId] = useState<number | null>();
   const [patientOwnerName, setPatientOwnerName] = useState('');
   const [patientOwnerEmail, setPatientOwnerEmail] = useState('');
   const [patientOwnerPhone, setPatientOwnerPhone] = useState('');
@@ -31,7 +42,6 @@ export const Form = ({
 
   useEffect(() => {
     if (Object.keys(patient).length > 0) {
-      console.log(patient);
       setPatientId(patient.id);
       setPatientName(patient.patientName);
       setPatientOwnerName(patient.patientOwnerName);
@@ -64,13 +74,14 @@ export const Form = ({
 
     // check if ita an existing user
 
-    const newPatient = {
+    const newPatient: PatientType = {
       patientName,
       patientOwnerName,
       patientOwnerEmail,
       patientOwnerPhone,
       date,
       patientSymptoms,
+      id: undefined,
     };
 
     if (patientId) {
@@ -87,7 +98,7 @@ export const Form = ({
 
     closeModal();
 
-    setPatientId('');
+    setPatientId(null);
     setPatientName('');
     setPatientOwnerName('');
     setPatientOwnerEmail('');

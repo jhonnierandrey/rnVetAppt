@@ -2,6 +2,17 @@ import React from 'react';
 import {Text, View, StyleSheet, Pressable} from 'react-native';
 import {dateFormatter} from '../helpers';
 
+import {PatientType} from '../types';
+
+type PatientProps = {
+  item: PatientType;
+  setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  editPatient: (id: number) => void;
+  removePatient: (id: number) => void;
+  setModalPatientDetails: React.Dispatch<React.SetStateAction<boolean>>;
+  setPatient: React.Dispatch<React.SetStateAction<PatientType | undefined>>;
+};
+
 export const Patient = ({
   item,
   setIsModalVisible,
@@ -9,7 +20,7 @@ export const Patient = ({
   removePatient,
   setModalPatientDetails,
   setPatient,
-}) => {
+}: PatientProps) => {
   const {patientName, date, id} = item;
 
   return (

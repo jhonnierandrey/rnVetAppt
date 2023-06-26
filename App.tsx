@@ -13,23 +13,27 @@ import {Form} from './src/components/Form';
 import {Patient} from './src/components/Patient';
 import {PatientDetails} from './src/components/PatientDetails';
 
+import {PatientType, PatientsType} from './src/types';
+
 const App = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [patients, setPatients] = useState([]);
-  const [patient, setPatient] = useState({});
+  const [patients, setPatients] = useState<PatientsType>([]);
+  const [patient, setPatient] = useState<PatientType | undefined>();
   const [modalPatientDetails, setModalPatientDetails] = useState(false);
 
   const newAppointmentHandler = () => {
     setIsModalVisible(!isModalVisible);
   };
 
-  const editPatient = id => {
-    const selectedPatient = patients?.filter(patient => patient.id === id);
+  const editPatient = (id: number) => {
+    const selectedPatient = patients?.filter(
+      patientFilter => patientFilter.id === id,
+    );
 
     setPatient(selectedPatient[0]);
   };
 
-  const removePatient = id => {
+  const removePatient = (id: number) => {
     Alert.alert(
       'Do you want to remove this patient?',
       "This action can't be undone",
@@ -38,7 +42,9 @@ const App = () => {
         {
           text: 'Remove',
           onPress: () => {
-            const updatedUsers = patients.filter(patient => patient.id !== id);
+            const updatedUsers = patients.filter(
+              patientFilter => patientFilter.id !== id,
+            );
             setPatients(updatedUsers);
           },
         },

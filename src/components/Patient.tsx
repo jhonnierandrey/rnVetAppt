@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   label: {
-    color: '#3744151',
+    color: '#374151',
     textTransform: 'uppercase',
     fontWeight: '700',
     marginBottom: 10,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   date: {
-    color: '#3744151',
+    color: '#374151',
   },
   containerBtns: {
     flexDirection: 'row',

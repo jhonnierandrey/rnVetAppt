@@ -41,7 +41,7 @@ export const Form = ({
   const [patientSymptoms, setPatientSymptoms] = useState('');
 
   useEffect(() => {
-    if (Object.keys(patient).length > 0) {
+    if (patient && Object.keys(patient).length > 0) {
       setPatientId(patient.id);
       setPatientName(patient.patientName);
       setPatientOwnerName(patient.patientOwnerName);
@@ -73,7 +73,6 @@ export const Form = ({
     }
 
     // check if ita an existing user
-
     const newPatient: PatientType = {
       patientName,
       patientOwnerName,
@@ -112,7 +111,7 @@ export const Form = ({
       <SafeAreaView style={styles.contentid}>
         <ScrollView>
           <Text style={styles.title}>
-            {patient.id ? 'Edit' : 'New'} <Text>Appoinment</Text>
+            {patient?.id ? 'Edit' : 'New'} <Text>Appoinment</Text>
           </Text>
 
           {/* <Button
@@ -133,7 +132,7 @@ export const Form = ({
               setDate(new Date());
               setPatientSymptoms('');
             }}>
-            <Text style={styles.btnCancelText}>X Cancel</Text>
+            <Text style={styles.btnCancelText}>Cancel</Text>
           </Pressable>
 
           <View style={styles.field}>
@@ -211,7 +210,7 @@ export const Form = ({
             style={styles.btnNewAppoinment}
             onPress={handleAppointment}>
             <Text style={styles.btnNewAppoinmentText}>
-              {patient.id ? 'Edit Patient' : 'Add Patient'}
+              {patient?.id ? 'Edit Patient' : 'Add Patient'}
             </Text>
           </Pressable>
         </ScrollView>

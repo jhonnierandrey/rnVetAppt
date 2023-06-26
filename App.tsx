@@ -60,7 +60,7 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>
-        Appointments <Text style={styles.titleBold}>Vet</Text>
+        Vet<Text style={styles.titleBold}>App</Text>
       </Text>
       <Pressable
         onPressOut={newAppointmentHandler}

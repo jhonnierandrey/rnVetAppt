@@ -1,4 +1,4 @@
-export const dateFormatter = date => {
+export const dateFormatter = (date: Date) => {
   const newDate = new Date(date);
   const options = {
     weekday: 'long',
@@ -7,5 +7,5 @@ export const dateFormatter = date => {
     day: 'numeric',
   };
 
-  return newDate.toLocaleDateString('es-ES', options);
+  return newDate.toLocaleDateString('en-EN', options);
 };

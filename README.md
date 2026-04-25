@@ -2,7 +2,7 @@
 
 As seen in [React Native - Crea aplicaciones para Android y iOS c/ React by Juan Pablo De la torre Valdez](https://www.udemy.com/course/react-native-crea-aplicaciones-para-android-y-ios-con-react/) TypeScript and migration to Expo by personal preference.
 
-![VetApp Preview](https://www.jaesmadeit.com/assets/img/projects/mobile-apps/vetapp-preview.png)
+![VetApp Preview](https://github.com/jhonnierandrey/rnVetAppt/blob/main/src/assets/vetapp-preview.png?raw=true)
 
 A minimal and modern **React Native + Expo** application for managing veterinary appointments locally on device storage.
 
